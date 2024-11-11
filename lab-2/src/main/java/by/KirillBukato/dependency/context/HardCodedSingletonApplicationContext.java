@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
-import by.bsu.dependency.exceptions.*;
+import by.KirillBukato.dependency.exceptions.*;
 
 import by.KirillBukato.dependency.annotation.Bean;
 

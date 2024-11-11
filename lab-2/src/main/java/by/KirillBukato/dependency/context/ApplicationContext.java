@@ -1,5 +1,7 @@
-package by.bsu.dependency.context;
+package by.KirillBukato.dependency.context;
 
+import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
+import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
 import by.bsu.dependency.exceptions.*;
 
 public interface ApplicationContext {

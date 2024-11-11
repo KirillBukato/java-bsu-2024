@@ -1,18 +1,20 @@
-package by.bsu.dependency.context;
+package by.KirillBukato.dependency.context;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
+import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
 import by.bsu.dependency.exceptions.*;
 
-import by.bsu.dependency.annotation.Bean;
+import by.KirillBukato.dependency.annotation.Bean;
 
 
 public class HardCodedSingletonApplicationContext extends AbstractApplicationContext {
 
-    private final Map<String, Class<?>> beanDefinitions;
     private final Map<String, Object> beans = new HashMap<>();
 
     /**
@@ -28,26 +30,23 @@ public class HardCodedSingletonApplicationContext extends AbstractApplicationCon
      * @param beanClasses классы, из которых требуется создать бины
      */
     public HardCodedSingletonApplicationContext(Class<?>... beanClasses) {
-        this.beanDefinitions = Arrays.stream(beanClasses).collect(
+        super(Arrays
+                .stream(beanClasses)
+                .collect(
                 Collectors.toMap(
                         beanClass -> beanClass.getAnnotation(Bean.class).name(),
                         Function.identity()
+                )
                 )
         );
     }
 
     @Override
     public void start() {
-        beanDefinitions.forEach((beanName, beanClass) -> beans.put(beanName, instantiateBean(beanClass)));
+        beanDefinitions.forEach(
+                (beanName, beanClass) -> beans.put(beanName, instantiateBean(beanClass))
+        );
         contextStatus = ContextStatus.STARTED;
-    }
-
-    @Override
-    public boolean containsBean(String name) {
-        if (!isRunning()) {
-            throw new ApplicationContextNotStartedException();
-        }
-        return beanDefinitions.containsKey(name);
     }
 
     @Override

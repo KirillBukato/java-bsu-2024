@@ -1,4 +1,4 @@
-package by.bsu.dependency.exceptions;
+package by.KirillBukato.dependency.exceptions;
 
 public class ApplicationContextNotStartedException extends RuntimeException {
     public ApplicationContextNotStartedException() {

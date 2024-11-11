@@ -1,4 +1,4 @@
-package by.bsu.dependency.annotation;
+package by.KirillBukato.dependency.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

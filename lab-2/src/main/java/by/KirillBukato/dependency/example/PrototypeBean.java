@@ -1,8 +1,9 @@
-package by.bsu.dependency.example;
+package by.KirillBukato.dependency.example;
 
-import by.bsu.dependency.annotation.Bean;
-import by.bsu.dependency.annotation.BeanScope;
-import by.bsu.dependency.annotation.Inject;
+import by.KirillBukato.dependency.annotation.Bean;
+import by.KirillBukato.dependency.annotation.BeanScope;
+import by.KirillBukato.dependency.annotation.Inject;
+import by.KirillBukato.dependency.annotation.PostConstruct;
 
 @Bean(name = "prototypeBean", scope = BeanScope.PROTOTYPE)
 public class PrototypeBean {
@@ -20,5 +21,10 @@ public class PrototypeBean {
     public void doSomething() {
         randomNameForFirstBean.printSomething();
         notBean.printSomething();
+    }
+
+    @PostConstruct
+    void init() {
+        System.out.println("Prototype bean is initialized");
     }
 }

@@ -1,11 +1,11 @@
-package by.bsu.dependency.context;
+package by.KirillBukato.dependency.context;
 
-import by.bsu.dependency.example.FirstBean;
-import by.bsu.dependency.example.NotBean;
-import by.bsu.dependency.example.OtherBean;
-import by.bsu.dependency.example.PrototypeBean;
-import by.bsu.dependency.exceptions.ApplicationContextNotStartedException;
-import by.bsu.dependency.exceptions.NoSuchBeanDefinitionException;
+import by.KirillBukato.dependency.example.FirstBean;
+import by.KirillBukato.dependency.example.NotBean;
+import by.KirillBukato.dependency.example.OtherBean;
+import by.KirillBukato.dependency.example.PrototypeBean;
+import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
+import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

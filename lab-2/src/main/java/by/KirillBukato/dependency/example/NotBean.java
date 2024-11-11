@@ -1,6 +1,4 @@
-package by.bsu.dependency.example;
-
-import by.bsu.dependency.annotation.Bean;
+package by.KirillBukato.dependency.example;
 
 public class NotBean {
 

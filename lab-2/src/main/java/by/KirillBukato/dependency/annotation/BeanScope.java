@@ -1,4 +1,4 @@
-package by.bsu.dependency.annotation;
+package by.KirillBukato.dependency.annotation;
 
 public enum BeanScope {
     SINGLETON,

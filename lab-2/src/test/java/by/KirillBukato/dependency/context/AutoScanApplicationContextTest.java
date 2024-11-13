@@ -11,7 +11,7 @@ public class AutoScanApplicationContextTest {
 
     @BeforeEach
     void init() {
-        applicationContext = new AutoScanApplicationContext("by.bsu.dependency.example");
+        applicationContext = new AutoScanApplicationContext("by.KirillBukato.dependency.example");
     }
 
     @Test

@@ -46,13 +46,26 @@ public class SimpleApplicationContext extends AbstractTwoTypeApplicationContext 
         );
     }
 
+
     @Override
     public <T> T getBean(Class<T> clazz) {
         return super.getBean(
                 clazz,
                 clazz2 -> clazz2.isAnnotationPresent(Bean.class) ?
                         clazz2.getAnnotation(Bean.class).name() :
-                        generateBeanName(clazz2)
+                        generateBeanName(clazz2),
+                new ArrayList<>()
+        );
+    }
+
+    @Override
+    public <T> T getBean(Class<T> clazz, ArrayList<String> beanNames) {
+        return super.getBean(
+                clazz,
+                clazz2 -> clazz2.isAnnotationPresent(Bean.class) ?
+                        clazz2.getAnnotation(Bean.class).name() :
+                        generateBeanName(clazz2),
+                beanNames
         );
     }
 

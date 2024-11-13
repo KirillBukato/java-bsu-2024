@@ -6,6 +6,7 @@ import by.KirillBukato.dependency.annotation.BeanScope;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
 import org.reflections.Reflections;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,17 @@ public class AutoScanApplicationContext extends AbstractTwoTypeApplicationContex
     public <T> T getBean(Class<T> clazz) {
         return super.getBean(
                 clazz,
-                clazz2 -> clazz2.getAnnotation(Bean.class).name()
+                clazz2 -> clazz2.getAnnotation(Bean.class).name(),
+                new ArrayList<>()
+        );
+    }
+
+    @Override
+    public <T> T getBean(Class<T> clazz, ArrayList<String> beanNames) {
+        return super.getBean(
+                clazz,
+                clazz2 -> clazz2.getAnnotation(Bean.class).name(),
+                beanNames
         );
     }
 

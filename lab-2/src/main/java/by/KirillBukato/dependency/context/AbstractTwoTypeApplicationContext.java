@@ -4,8 +4,10 @@ import by.KirillBukato.dependency.annotation.Inject;
 import by.KirillBukato.dependency.annotation.PostConstruct;
 import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
+import by.KirillBukato.dependency.exceptions.RecursiveInjectionException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +31,13 @@ public abstract class AbstractTwoTypeApplicationContext extends AbstractApplicat
                 }
         );
         contextStatus = ContextStatus.STARTED;
-        singletons.forEach(this::inject);
+        singletons.forEach(
+                (name, obj) -> inject(name, obj, new ArrayList<>())
+        );
         singletons.forEach(this::callPostConstruct);
     }
 
-    @Override
-    public Object getBean(String name) {
+    protected Object getBeanRecursive(String name, ArrayList<String> beanNames) {
         if (!isRunning()) {
             throw new ApplicationContextNotStartedException();
         }
@@ -45,13 +48,18 @@ public abstract class AbstractTwoTypeApplicationContext extends AbstractApplicat
             return singletons.get(name);
         } else {
             Object bean = instantiateBean(beanDefinitions.get(name));
-            inject(name, bean);
+            inject(name, bean, beanNames);
             callPostConstruct(name, bean);
             return bean;
         }
     }
 
-    public <T> T getBean(Class<T> clazz, Function<Class<T>, String> function) {
+    @Override
+    public Object getBean(String name) {
+        return getBeanRecursive(name, new ArrayList<>());
+    }
+
+    public <T> T getBean(Class<T> clazz, Function<Class<T>, String> function, ArrayList<String> beanNames) {
         if (!isRunning()) {
             throw new ApplicationContextNotStartedException();
         }
@@ -63,13 +71,20 @@ public abstract class AbstractTwoTypeApplicationContext extends AbstractApplicat
             return (T) singletons.get(name);
         } else {
             T bean = (T) instantiateBean(beanDefinitions.get(name));
-            inject(name, bean);
+            inject(name, bean, beanNames);
             callPostConstruct(name, bean);
             return bean;
         }
     }
 
-    private void inject(String beanName, Object bean) {
+    protected abstract <T> T getBean(Class<T> clazz, ArrayList<String> beanNames);
+
+    private void inject(String beanName, Object bean, ArrayList<String> beanNames) {
+        if (beanNames.contains(beanName)) {
+            throw new RecursiveInjectionException(beanName, beanNames);
+        }
+
+        beanNames.add(beanName);
         Arrays.stream(beanDefinitions.get(beanName).getDeclaredFields())
                 .toList()
                 .forEach(
@@ -77,13 +92,14 @@ public abstract class AbstractTwoTypeApplicationContext extends AbstractApplicat
                             if (field.isAnnotationPresent(Inject.class)) {
                                 try {
                                     field.setAccessible(true);
-                                    field.set(bean, getBean(field.getType()));
+                                    field.set(bean, getBean(field.getType(), beanNames));
                                 } catch (IllegalAccessException ignored) {
 
                                 }
                             }
                         }
                 );
+        beanNames.remove(beanName);
     }
 
     private void callPostConstruct(String beanName, Object bean) {

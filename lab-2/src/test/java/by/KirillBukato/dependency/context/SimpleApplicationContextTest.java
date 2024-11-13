@@ -6,6 +6,9 @@ import by.KirillBukato.dependency.example.OtherBean;
 import by.KirillBukato.dependency.example.PrototypeBean;
 import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
+import by.KirillBukato.dependency.exceptions.RecursiveInjectionException;
+import by.KirillBukato.dependency.recursiveExample.PrototypeBean1;
+import by.KirillBukato.dependency.recursiveExample.PrototypeBean2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -135,5 +138,18 @@ class SimpleApplicationContextTest {
         PrototypeBean prototypeBean2 = (PrototypeBean) applicationContext.getBean("prototypeBean");
 
         assertThat(prototypeBean).isNotSameAs(prototypeBean2);
+    }
+
+    @Test
+    void testRecursivePrototype() {
+        applicationContext = new SimpleApplicationContext(
+                PrototypeBean1.class,
+                PrototypeBean2.class
+        );
+        applicationContext.start();
+        assertThrows(
+                RecursiveInjectionException.class,
+                () -> applicationContext.getBean("prototypeBean1")
+        );
     }
 }

@@ -4,7 +4,6 @@ import by.KirillBukato.dependency.example.FirstBean;
 import by.KirillBukato.dependency.example.OtherBean;
 import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
-import by.bsu.dependency.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

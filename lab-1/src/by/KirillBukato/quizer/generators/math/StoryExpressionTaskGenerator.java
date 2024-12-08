@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class StoryExpressionTaskGenerator extends AbstractExpressionTaskGenerator<StoryExpressionTask> {
 
-    public StoryExpressionTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet, EnumSet<MathStory> storySet) throws InvalidGeneratorException {
+    public StoryExpressionTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet, EnumSet<MathStory> storySet) {
         super(minNumber, maxNumber, operationSet);
         this.storySet = new ArrayList<>(storySet);
         if (storySet.isEmpty()) {

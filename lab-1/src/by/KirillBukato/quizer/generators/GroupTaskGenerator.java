@@ -1,5 +1,6 @@
 package by.KirillBukato.quizer.generators;
 
+import by.KirillBukato.quizer.exceptions.NoSuitableGeneratorFoundException;
 import by.KirillBukato.quizer.tasks.Task;
 import by.KirillBukato.quizer.exceptions.InvalidGeneratorException;
 
@@ -12,7 +13,7 @@ public class GroupTaskGenerator<T extends Task> implements TaskGenerator<T> {
      * @param generators генераторы, которые в конструктор передаются через запятую
      */
     @SafeVarargs
-    public GroupTaskGenerator(TaskGenerator<? extends T>... generators) throws InvalidGeneratorException {
+    public GroupTaskGenerator(TaskGenerator<? extends T>... generators) {
         this.generators = new ArrayList<>(Arrays.asList(generators));
         if (this.generators.isEmpty()) {
             throw new InvalidGeneratorException("GroupTaskGenerator must have at least one generator");
@@ -34,17 +35,16 @@ public class GroupTaskGenerator<T extends Task> implements TaskGenerator<T> {
      * Если все генераторы выбрасывают исключение, то и тут выбрасывается исключение.
      */
     @Override
-    public T generate() throws RuntimeException {
+    public T generate() {
         Collections.shuffle(generators);
-        RuntimeException exception = new RuntimeException();
         for (TaskGenerator<? extends T> generator : generators) {
             try {
                 return generator.generate();
-            } catch (RuntimeException e) {
-                exception = e;
+            } catch (RuntimeException ignored) {
+
             }
         }
-        throw exception;
+        throw new NoSuitableGeneratorFoundException();
     }
 
     private final ArrayList<TaskGenerator<? extends T>> generators;

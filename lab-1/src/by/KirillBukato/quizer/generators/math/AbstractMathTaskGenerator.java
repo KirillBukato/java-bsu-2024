@@ -21,7 +21,7 @@ public abstract class AbstractMathTaskGenerator<T extends MathTask> implements M
      */
     public AbstractMathTaskGenerator(int minNumber,
                                      int maxNumber,
-                                     EnumSet<MathOperation> operationArray) throws InvalidGeneratorException {
+                                     EnumSet<MathOperation> operationArray) {
         this.minNumber = minNumber;
         this.maxNumber = maxNumber;
         this.operationArray = new ArrayList<>(operationArray);
@@ -34,7 +34,7 @@ public abstract class AbstractMathTaskGenerator<T extends MathTask> implements M
      * Для всех валидаторов у математических задач есть общее условие:
      * минимальное число должно быть меньше максимального.
      */
-    public void validateGenerator() throws InvalidGeneratorException {
+    public void validateGenerator() {
         if (getMinNumber() > getMaxNumber()) {
             throw new InvalidGeneratorException("Min value is greater than Max value");
         }

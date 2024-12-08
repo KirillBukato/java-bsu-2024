@@ -40,7 +40,7 @@ public class PoolTaskGenerator<T extends Task> implements TaskGenerator<T> {
      * @return случайная задача из списка
      */
     @Override
-    public T generate() throws PoolGeneratorRanOutException {
+    public T generate() {
         if (tasks.isEmpty()) {
             throw new PoolGeneratorRanOutException();
         }

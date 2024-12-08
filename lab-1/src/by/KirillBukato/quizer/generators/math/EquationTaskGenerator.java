@@ -14,7 +14,7 @@ public class EquationTaskGenerator extends AbstractMathTaskGenerator<EquationTas
      * @param maxNumber    максимальное число
      * @param operationSet множество разрешённых операций
      */
-    public EquationTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet) throws InvalidGeneratorException {
+    public EquationTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet) {
         super(minNumber, maxNumber, operationSet);
     }
 
@@ -24,7 +24,7 @@ public class EquationTaskGenerator extends AbstractMathTaskGenerator<EquationTas
      * Иначе есть шанс, что сгенерируется валидный.
      */
     @Override
-    public void validateGenerator() throws InvalidGeneratorException {
+    public void validateGenerator() {
         super.validateGenerator();
         if (operationsIsDivisionAndMultiplication() && getMinNumber() == 0 && getMaxNumber() == 0) {
             throw new InvalidGeneratorException("Task will always have zero division");

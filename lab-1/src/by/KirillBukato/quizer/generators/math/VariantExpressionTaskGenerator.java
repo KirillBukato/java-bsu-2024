@@ -13,7 +13,7 @@ public class VariantExpressionTaskGenerator extends AbstractExpressionTaskGenera
      * @param maxNumber    максимальное число
      * @param operationSet множество разрешённых операций
      */
-    public VariantExpressionTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet) throws InvalidGeneratorException {
+    public VariantExpressionTaskGenerator(int minNumber, int maxNumber, EnumSet<MathOperation> operationSet) {
         super(minNumber, maxNumber, operationSet);
     }
 
@@ -22,7 +22,7 @@ public class VariantExpressionTaskGenerator extends AbstractExpressionTaskGenera
      * Если доступно меньше трёх чисел для генерации, то будет несколько одинаковых вариантов ответа, мы такого не хотим
      */
     @Override
-    public void validateGenerator() throws InvalidGeneratorException {
+    public void validateGenerator() {
         super.validateGenerator();
         if (getDiffNumber() < 3) {
             throw new InvalidGeneratorException("Task will always have repeating variants");

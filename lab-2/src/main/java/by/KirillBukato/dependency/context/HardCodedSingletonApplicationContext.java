@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import by.KirillBukato.dependency.exceptions.ApplicationContextNotStartedException;
 import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
-import by.KirillBukato.dependency.exceptions.*;
 
 import by.KirillBukato.dependency.annotation.Bean;
 
@@ -36,8 +35,8 @@ public class HardCodedSingletonApplicationContext extends AbstractApplicationCon
                 Collectors.toMap(
                         beanClass -> beanClass.getAnnotation(Bean.class).name(),
                         Function.identity()
-                )
-                )
+                )),
+                clazz -> true
         );
     }
 
@@ -70,21 +69,5 @@ public class HardCodedSingletonApplicationContext extends AbstractApplicationCon
             throw new NoSuchBeanDefinitionException(name);
         }
         return (T) beans.get(name);
-    }
-
-    @Override
-    public boolean isPrototype(String name) {
-        if (!beanDefinitions.containsKey(name)) {
-            throw new NoSuchBeanDefinitionException(name);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isSingleton(String name) {
-        if (!beanDefinitions.containsKey(name)) {
-            throw new NoSuchBeanDefinitionException(name);
-        }
-        return true;
     }
 }

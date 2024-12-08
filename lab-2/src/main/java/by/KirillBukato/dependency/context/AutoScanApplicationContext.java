@@ -3,10 +3,8 @@ package by.KirillBukato.dependency.context;
 
 import by.KirillBukato.dependency.annotation.Bean;
 import by.KirillBukato.dependency.annotation.BeanScope;
-import by.KirillBukato.dependency.exceptions.NoSuchBeanDefinitionException;
 import org.reflections.Reflections;
 
-import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,43 +29,9 @@ public class AutoScanApplicationContext extends AbstractTwoTypeApplicationContex
                                 beanClass.getAnnotation(Bean.class).name(),
                                 Function.identity()
                         )
-                )
+                ),
+                 beanClass -> beanClass.getAnnotation(Bean.class).scope() == BeanScope.SINGLETON,
+                 clazz2 -> clazz2.getAnnotation(Bean.class).name()
          );
-    }
-
-    @Override
-    public void start() {
-        start(beanClass -> beanClass.getAnnotation(Bean.class).scope() == BeanScope.SINGLETON);
-    }
-
-    @Override
-    public <T> T getBean(Class<T> clazz) {
-        return super.getBean(
-                clazz,
-                clazz2 -> clazz2.getAnnotation(Bean.class).name(),
-                new ArrayList<>()
-        );
-    }
-
-    @Override
-    public <T> T getBean(Class<T> clazz, ArrayList<String> beanNames) {
-        return super.getBean(
-                clazz,
-                clazz2 -> clazz2.getAnnotation(Bean.class).name(),
-                beanNames
-        );
-    }
-
-    @Override
-    public boolean isPrototype(String name) {
-        return !isSingleton(name);
-    }
-
-    @Override
-    public boolean isSingleton(String name) {
-        if (!beanDefinitions.containsKey(name)) {
-            throw new NoSuchBeanDefinitionException(name);
-        }
-        return beanDefinitions.get(name).getAnnotation(Bean.class).scope() == BeanScope.SINGLETON;
     }
 }
